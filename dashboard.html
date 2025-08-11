@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER BOT - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --dark: #222;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        main {
+            padding-bottom: 3rem;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            gap: 12px;
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .status-card .card-icon {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+        
+        .commands-card .card-icon {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+        
+        .users-card .card-icon {
+            background: linear-gradient(135deg, #f5af19, #f12711);
+        }
+        
+        .uptime-card .card-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .card-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: var(--dark);
+        }
+        
+        .card-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(74, 0, 224, 0.03), rgba(142, 45, 226, 0.03));
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .feature-description {
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .stats-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .stats-refresh {
+            background: var(--light);
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+        
+        .stats-refresh:hover {
+            background: #e9ecef;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: #e9ecef;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 40px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .card-value {
+                font-size: 1.8rem;
+            }
+            
+            .feature-icon {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-robot logo-icon"></i>
+                <h1>CYBER BOT DASHBOARD</h1>
+            </div>
+            <div class="status-badge">
+                <span style="color: var(--success);">●</span>
+                <span>Bot Online</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard">
+            <div class="card status-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="card-title">Status</h3>
+                </div>
+                <div class="card-value" id="status-value">Online</div>
+                <p class="card-description">Bot is currently operational and responding to commands.</p>
+            </div>
+
+            <div class="card commands-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3 class="card-title">Commands</h3>
+                </div>
+                <div class="card-value" id="commands-count">300+</div>
+                <p class="card-description">Total available commands in the bot.</p>
+            </div>
+
+            <div class="card users-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">Users</h3>
+                </div>
+                <div class="card-value" id="users-count">--</div>
+                <p class="card-description">Active users interacting with the bot.</p>
+            </div>
+
+            <div class="card uptime-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="card-title">Uptime</h3>
+                </div>
+                <div class="card-value" id="uptime-value">--:--:--</div>
+                <p class="card-description">Time since last restart.</p>
+            </div>
+        </div>
+
+        <section class="stats-section">
+            <div class="stats-header">
+                <h2 class="stats-title">Bot Statistics</h2>
+                <button class="stats-refresh" id="refresh-stats">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Refresh</span>
+                </button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="messages-count">0</div>
+                    <div class="stat-label">Messages Processed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="groups-count">0</div>
+                    <div class="stat-label">Active Groups</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="commands-used">0</div>
+                    <div class="stat-label">Commands Used</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="restarts-count">0</div>
+                    <div class="stat-label">Restarts</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="feature-title">Media Downloads</h3>
+                    <p class="feature-description">Download videos, images, and audio from various platforms including Facebook, YouTube, TikTok, and more.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title">Fun Games</h3>
+                    <p class="feature-description">Play interactive games directly in your Messenger chats with friends and groups.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mosque"></i>
+                    </div>
+                    <h3 class="feature-title">Islamic Content</h3>
+                    <p class="feature-description">Access Islamic prayers, quotes, Quran verses, prayer times, and other religious resources.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="feature-title">Utility Tools</h3>
+                    <p class="feature-description">Various utility commands to enhance your Messenger experience including group management tools.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Command Categories</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="feature-title">Admin Commands</h3>
+                    <p class="feature-description">Manage groups, users, and bot settings with powerful administrative tools.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3 class="feature-title">Media Commands</h3>
+                    <p class="feature-description">Create and manipulate images and videos with various filters and effects.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Search Commands</h3>
+                    <p class="feature-description">Search for information across the web, including Google, Wikipedia, and more.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laugh"></i>
+                    </div>
+                    <h3 class="feature-title">Fun Commands</h3>
+                    <p class="feature-description">Entertainment and interactive commands to make your chats more enjoyable.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About CYBER BOT</h3>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem;">
+                        CYBER BOT is a powerful Messenger bot designed to enhance your chat experience with numerous features and commands.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/index"><i class="fas fa-server"></i> Status Page</a></li>
+                        <li><a href="https://github.com/cyber-ullash/CYBER-BOT-COMMUNITY" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-envelope"></i> Email</a></li>
+                        <li><a href="https://wa.me/+8801882333052" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                        <li><a href="#"><i class="fab fa-facebook-messenger"></i> Messenger</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>© 2023 CYBER BOT TEAM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Update uptime counter
+        let startTime = new Date();
+        
+        function updateUptime() {
+            const now = new Date();
+            const diff = now - startTime;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('uptime-value').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Simulate random user count
+        function updateUserCount() {
+            const randomUsers = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('users-count').textContent = randomUsers;
+        }
+        
+        // Simulate statistics
+        function updateStats() {
+            document.getElementById('messages-count').textContent = Math.floor(Math.random() * 10000) + 5000;
+            document.getElementById('groups-count').textContent = Math.floor(Math.random() * 200) + 50;
+            document.getElementById('commands-used').textContent = Math.floor(Math.random() * 5000) + 1000;
+            document.getElementById('restarts-count').textContent = Math.floor(Math.random() * 10);
+        }
+        
+        // Initial updates
+        updateUptime();
+        updateUserCount();
+        updateStats();
+        
+        // Set intervals for updates
+        setInterval(updateUptime, 1000);
+        setInterval(updateUserCount, 60000); // Update user count every minute
+        
+        // Add refresh button functionality
+        document.getElementById('refresh-stats').addEventListener('click', function() {
+            this.querySelector('i').classList.add('fa-spin');
+            setTimeout(() => {
+                updateStats();
+                this.querySelector('i').classList.remove('fa-spin');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
