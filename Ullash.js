@@ -12,8 +12,16 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Serve the index.html file
+// Serve static files
+app.use(express.static(path.join(__dirname)));
+
+// Serve the dashboard as the main page
 app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, '/dashboard.html'));
+});
+
+// Keep the original index page accessible
+app.get('/index', function (req, res) {
     res.sendFile(path.join(__dirname, '/index.html'));
 });
 
@@ -75,3 +83,4 @@ axios.get("https://raw.githubusercontent.com/cyber-ullash/cyber-bot/main/data.js
 
 // Start the bot
 startBot();
+
