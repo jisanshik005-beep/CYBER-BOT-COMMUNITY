@@ -12,7 +12,7 @@ module.exports.config = {
 };
 
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
-const API_KEY = 'YOUR_DEEPSEEK_API_KEY'; // Replace with your actual DeepSeek API key
+const API_KEY = 'sk-26616da01dbb426ca8406db16a74b5a9'; // Replace with your actual DeepSeek API key
 
 // Character definition for Shizuka
 const characterPrompt = `
