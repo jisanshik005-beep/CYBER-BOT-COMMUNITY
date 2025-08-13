@@ -1,4 +1,4 @@
-name: Node.js CI with Dashboard
+name: Node.js CI
 
 on:
   push:
@@ -28,20 +28,7 @@ jobs:
     # Step to install dependencies
     - name: Install dependencies
       run: npm install
-      
-    # Step to install localtunnel for exposing the dashboard
-    - name: Install localtunnel
-      run: npm install -g localtunnel
 
-    # Step to run the dashboard server
-    - name: Start the dashboard server
-      env:
-        PORT: 8080
-        LT_SUBDOMAIN: ${{ secrets.LT_SUBDOMAIN || 'cyber-bot-dashboard' }}
-        AUTH_USERNAME: ${{ secrets.AUTH_USERNAME || 'admin' }}
-        AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD || 'cyberbot' }}
-      run: node server.js &
-      
     # Step to run the bot with the correct port
     - name: Start the bot
       env:
